@@ -1,0 +1,159 @@
+<html>
+  <head>
+    <title>CSS Variables Demo</title>
+    <style>
+      :root {
+        --fonts: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        --background: #243139;
+        --foreground-text: #ffffff;
+
+        --body-margin: 0;
+        --body-padding: 0;
+
+        --nav-background: rgba(0, 0, 0, 0.4);
+        --nav-padding: 1.5rem;
+
+        --nav-item-margin: 0 1rem 0 0;
+
+        --card-padding: 1.5rem;
+        --card-radius: var(--card-padding);
+        --card-background: rgba(0, 0, 0, 0.25);
+      }
+
+      .light-theme {
+        --background: #ffffff;
+        --foreground-text: #243139;
+
+        --nav-background: rgba(0, 0, 0, 0.4);
+        --card-background: rgba(0, 0, 0, 0.25);
+      }
+
+      .hot-pink-theme {
+        --background: hotpink;
+        --foreground-text: white;
+
+        --nav-background: rgba(0, 0, 0, 0.4);
+        --card-background: rgba(0, 0, 0, 0.25);
+      }
+
+      body,
+      html {
+        font-family: var(--fonts);
+        margin: var(--body-margin);
+        padding: var(--body-padding);
+      }
+
+      body {
+        background: var(--background);
+        color: var(--foreground-text);
+      }
+
+      nav {
+        padding: var(--nav-padding);
+        background: var(--nav-background);
+      }
+
+      nav > ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav > ul > li {
+        display: block;
+        margin: var(--nav-item-margin);
+        padding: 0;
+      }
+
+      .row {
+        display: flex;
+        justify-content: center;
+        align-content: stretch;
+      }
+
+      .card {
+        margin: var(--card-padding);
+        padding: var(--card-padding);
+        border-radius: var(--card-radius);
+        background: var(--card-background);
+      }
+
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li>Hello</li>
+        <li>World</li>
+      </ul>
+    </nav>
+    <section class="row">
+      <div class="card">
+        Some content in a card
+      </div>
+      <div class="card">
+        Some other card
+      </div>
+    </section>
+
+    <button id="light-theme">
+      Set to light theme!
+    </button>
+
+    <button id="hot-pink-theme">
+      Set to hot pink theme!
+    </button>
+
+    <button id="reset-theme">
+      Reset
+    </button>
+
+    <section class="row">
+      <div>
+        <label>
+          Custom background
+          <input id="custom-background" type="color" />
+        </label>
+      </div>
+    </section>
+
+    <script>
+      const themes = {
+        light: "light-theme",
+        hotPink: "hot-pink-theme",
+      };
+      const root = document.documentElement;
+      const lightTheme = document.querySelector("#light-theme");
+      const hotPinkTheme = document.querySelector("#hot-pink-theme");
+      const resetTheme = document.querySelector("#reset-theme");
+
+      const customBackground = document.querySelector("#custom-background");
+
+      lightTheme.addEventListener("click", () => {
+        window.document.body.classList.remove(themes.hotPink);
+        window.document.body.classList.add(themes.light);
+      });
+
+      hotPinkTheme.addEventListener("click", () => {
+        window.document.body.classList.add(themes.hotPink);
+        window.document.body.classList.remove(themes.light);
+      });
+
+      resetTheme.addEventListener("click", () => {
+        Object.keys(themes).map((key) => {
+          window.document.body.classList.remove(themes[key]);
+          root.removeAttribute("style");
+        });
+      });
+
+      customBackground.addEventListener("change", (e) => {
+        const value = e.currentTarget.value;
+        root.style.setProperty("--background", value);
+        console.log("we now", root.style.getPropertyValue("--background"));
+      });
+    </script>
+  </body>
+</html>
